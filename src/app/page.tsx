@@ -91,6 +91,8 @@ const HomePage = () => {
                     alt={product.name}
                     className="w-full h-40 object-contain rounded-lg mb-4"
                     loading="lazy"
+                    width={400}
+                    height={400}
                   />
                   <h3 className="text-lg font-semibold">{product.name}</h3>
                   <p className="text-sm text-gray-600 mb-2">{product.overview}</p>

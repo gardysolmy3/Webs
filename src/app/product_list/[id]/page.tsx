@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-import { Product } from '../../lib/types';
+{/*import { Product } from '../../lib/types';*/}
 import Image from 'next/image'; 
 
 
@@ -85,6 +85,8 @@ export default async function ProductPage({ params }: Props) {
           src={product.image_url}
           alt={product.name}
           className="w-full h-64 object-contain rounded-xl shadow-lg"
+          width={400}
+          height={400}
         />
         <div>
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
