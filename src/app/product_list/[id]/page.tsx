@@ -2,11 +2,10 @@ import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import Image from 'next/image';
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+// Don't specify type for params, just use it directly
+export default async function ProductPage(props: any) {
+  const { params } = props;
+
   const { data: products, error: allError } = await supabase
     .from('Products')
     .select('id, name')
