@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Product } from '../lib/types';
+import Image from 'next/image';
 
 interface SpotlightProps {
   product: Product;
@@ -15,18 +16,21 @@ const SpotlightProduct: React.FC<SpotlightProps> = ({ product }) => {
       </span>
 
       {/* Image on the left */}
-      <div className="md:w-1/2">
-        <img
-          src={product.image_url}          
+      <div className="md:w-1/2 relative h-[300px] md:h-auto md:min-h-[300px] rounded-lg overflow-hidden">
+        <Image
+          src={product.image_url}
           alt={product.name}
-          className="rounded-lg object-cover w-full h-[300px] md:h-full"
+          fill
+          style={{ objectFit: 'cover' }}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority
         />
       </div>
 
       {/* Text content on the right */}
       <div className="md:w-1/2">
         <h2 className="text-3xl font-extrabold mb-3 text-gray-900">{product.name}</h2>
-        <p className="text-base text-gray-700 mb-4">{product.description}</p> {/* changed from details */}
+        <p className="text-base text-gray-700 mb-4">{product.description}</p>
         <p className="text-xl font-bold text-green-700">${product.price}</p>
       </div>
     </section>
