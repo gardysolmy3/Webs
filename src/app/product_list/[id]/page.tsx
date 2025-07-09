@@ -1,15 +1,12 @@
 import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import Image from 'next/image';
+import Link from 'next/link';
 
-// Next.js expects this specific shape for dynamic routes in the app router
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
 
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage(props: { params: { id: string } }) {
+  const { params } = props;
+  const idNum = Number(params.id);
   const { data: products, error: allError } = await supabase
     .from('Products')
     .select('id, name')
@@ -17,7 +14,7 @@ export default async function ProductPage({ params }: PageProps) {
 
   if (allError || !products || products.length === 0) return notFound();
 
-  const currentIndex = products.findIndex((p) => p.id === params.id);
+  const currentIndex = products.findIndex((p) => p.id === idNum);
   if (currentIndex === -1) return notFound();
 
   const prevProduct = currentIndex > 0 ? products[currentIndex - 1] : null;
@@ -26,7 +23,7 @@ export default async function ProductPage({ params }: PageProps) {
   const { data: product, error } = await supabase
     .from('Products')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', idNum)
     .single();
 
   if (error || !product) return notFound();
@@ -38,7 +35,7 @@ export default async function ProductPage({ params }: PageProps) {
     <div className="max-w-4xl mx-auto px-6 py-10 flex items-center gap-6">
       {/* Prev arrow */}
       {prevProduct ? (
-        <a
+        <Link
           href={`/product_list/${prevProduct.id}`}
           className={`${arrowBaseClasses} bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-md`}
           aria-label={`Previous product: ${prevProduct.name}`}
@@ -47,7 +44,7 @@ export default async function ProductPage({ params }: PageProps) {
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
-        </a>
+        </Link>
       ) : (
         <div className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}>
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -59,7 +56,7 @@ export default async function ProductPage({ params }: PageProps) {
       {/* Main product content */}
       <div className="grid md:grid-cols-2 gap-10 items-center flex-grow">
         <Image
-          src={product.image_url}
+          src={product.image_url || '/fallback.png'}
           alt={product.name}
           className="w-full h-64 object-contain rounded-xl shadow-lg"
           width={400}
@@ -75,7 +72,7 @@ export default async function ProductPage({ params }: PageProps) {
 
       {/* Next arrow */}
       {nextProduct ? (
-        <a
+        <Link
           href={`/product_list/${nextProduct.id}`}
           className={`${arrowBaseClasses} bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-md`}
           aria-label={`Next product: ${nextProduct.name}`}
@@ -84,7 +81,7 @@ export default async function ProductPage({ params }: PageProps) {
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
-        </a>
+        </Link>
       ) : (
         <div className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}>
           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
