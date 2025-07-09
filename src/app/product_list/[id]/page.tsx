@@ -1,27 +1,17 @@
 import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-{/*import { Product } from '../../lib/types';*/}
-import Image from 'next/image'; 
+import Image from 'next/image';
 
-
-type Props = {
-  params: { id: string };
-};
-
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params }: { params: { id: string } }) {
   const { data: products, error: allError } = await supabase
     .from('Products')
     .select('id, name')
     .order('created_at', { ascending: true });
 
-  if (allError || !products || products.length === 0) {
-    return notFound();
-  }
+  if (allError || !products || products.length === 0) return notFound();
 
   const currentIndex = products.findIndex((p) => p.id === params.id);
-  if (currentIndex === -1) {
-    return notFound();
-  }
+  if (currentIndex === -1) return notFound();
 
   const prevProduct = currentIndex > 0 ? products[currentIndex - 1] : null;
   const nextProduct = currentIndex < products.length - 1 ? products[currentIndex + 1] : null;
@@ -32,9 +22,7 @@ export default async function ProductPage({ params }: Props) {
     .eq('id', params.id)
     .single();
 
-  if (error || !product) {
-    return notFound();
-  }
+  if (error || !product) return notFound();
 
   const arrowBaseClasses =
     'flex items-center justify-center w-12 h-12 rounded-full cursor-pointer select-none transition-colors duration-200';
@@ -87,6 +75,7 @@ export default async function ProductPage({ params }: Props) {
           className="w-full h-64 object-contain rounded-xl shadow-lg"
           width={400}
           height={400}
+          priority
         />
         <div>
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
