@@ -14,7 +14,8 @@ export default async function ProductPage(props: { params: { id: string } }) {
 
   if (allError || !products || products.length === 0) return notFound();
 
-  const currentIndex = products.findIndex((p) => p.id === idNum);
+  // Ensure both sides are numbers for comparison
+  const currentIndex = products.findIndex((p) => Number(p.id) === idNum);
   if (currentIndex === -1) return notFound();
 
   const prevProduct = currentIndex > 0 ? products[currentIndex - 1] : null;
@@ -36,7 +37,7 @@ export default async function ProductPage(props: { params: { id: string } }) {
       {/* Prev arrow */}
       {prevProduct ? (
         <Link
-          href={`/product_list/${prevProduct.id}`}
+          href={`/product_list/${Number(prevProduct.id)}`}
           className={`${arrowBaseClasses} bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-md`}
           aria-label={`Previous product: ${prevProduct.name}`}
           title={`Previous product: ${prevProduct.name}`}
@@ -73,7 +74,7 @@ export default async function ProductPage(props: { params: { id: string } }) {
       {/* Next arrow */}
       {nextProduct ? (
         <Link
-          href={`/product_list/${nextProduct.id}`}
+          href={`/product_list/${Number(nextProduct.id)}`}
           className={`${arrowBaseClasses} bg-gray-100 hover:bg-gray-200 text-gray-700 shadow-md`}
           aria-label={`Next product: ${nextProduct.name}`}
           title={`Next product: ${nextProduct.name}`}
