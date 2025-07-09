@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image'; 
 import { supabase } from './lib/supabaseClient';
 import SpotlightProduct from './components/spotlight';
 import { Product } from './lib/types';
@@ -15,14 +16,10 @@ const HomePage = () => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        console.log('Fetching products from Supabase...');
         const { data, error } = await supabase
           .from('Products')
           .select('*')
           .order('created_at', { ascending: true });
-
-        console.log('Supabase response data:', data);
-        console.log('Supabase response error:', error);
 
         if (error) throw error;
         if (!data || data.length === 0) {
@@ -35,7 +32,7 @@ const HomePage = () => {
           setRecommendedProduct(typedData[3] ?? typedData[0]);
           setError(null);
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load products.');
         setProducts([]);
         setRecommendedProduct(null);
@@ -86,10 +83,10 @@ const HomePage = () => {
                 key={product.id}
                 href={`/product_list/${product.id}`}
                 className="no-underline"
-                passHref
               >
                 <div className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer">
-                  <img
+                  {/* Replace <img> with <Image /> for better optimization if needed */}
+                  <Image
                     src={product.image_url}
                     alt={product.name}
                     className="w-full h-40 object-contain rounded-lg mb-4"

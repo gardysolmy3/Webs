@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import { Product } from '../../lib/types';
+import Image from 'next/image'; 
+
 
 type Props = {
   params: { id: string };
@@ -79,7 +81,7 @@ export default async function ProductPage({ params }: Props) {
 
       {/* Main product content */}
       <div className="grid md:grid-cols-2 gap-10 items-center flex-grow">
-        <img
+        <Image
           src={product.image_url}
           alt={product.name}
           className="w-full h-64 object-contain rounded-xl shadow-lg"
