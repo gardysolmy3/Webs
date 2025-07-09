@@ -2,10 +2,14 @@ import { notFound } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
 import Image from 'next/image';
 
-// Don't specify type for params, just use it directly
-export default async function ProductPage(props: any) {
-  const { params } = props;
+// Next.js expects this specific shape for dynamic routes in the app router
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
+export default async function ProductPage({ params }: PageProps) {
   const { data: products, error: allError } = await supabase
     .from('Products')
     .select('id, name')
@@ -40,31 +44,13 @@ export default async function ProductPage(props: any) {
           aria-label={`Previous product: ${prevProduct.name}`}
           title={`Previous product: ${prevProduct.name}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </a>
       ) : (
-        <div
-          className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}
-          aria-hidden="true"
-          title="No previous product"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+        <div className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}>
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </div>
@@ -95,31 +81,13 @@ export default async function ProductPage(props: any) {
           aria-label={`Next product: ${nextProduct.name}`}
           title={`Next product: ${nextProduct.name}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </a>
       ) : (
-        <div
-          className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}
-          aria-hidden="true"
-          title="No next product"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
+        <div className={`${arrowBaseClasses} bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed`}>
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </div>
